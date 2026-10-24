@@ -87,15 +87,32 @@ if (Test-Path $readme) {
 
 $hash = (Get-FileHash -Path $exe -Algorithm SHA256).Hash.ToLowerInvariant()
 $exeName = Split-Path $exe -Leaf
+$size = [math]::Round((Get-Item $exe).Length / 1MB, 1)
+
+# 校验码清单：主程序必列；同目录里若还有安装程序，也一并写上——
+# 用户在 52pojie 下载的通常是安装包，只给主程序的哈希会让核对的人扑空。
+$hashLines = @("$hash  $exeName")
+$extraLines = @()
+
+$setupInDist = Join-Path $PSScriptRoot 'dist\云存储管家-安装程序.exe'
+if ((Test-Path $setupInDist) -and ($setupInDist -ne $exe)) {
+    $setupHash = (Get-FileHash -Path $setupInDist -Algorithm SHA256).Hash.ToLowerInvariant()
+    $setupSize = [math]::Round((Get-Item $setupInDist).Length / 1MB, 1)
+    $hashLines += ''
+    $hashLines += "$setupHash  $(Split-Path $setupInDist -Leaf)"
+    $extraLines += "安装程序大小：$setupSize MB"
+}
+
 @(
-    "$hash  $exeName",
-    '',
-    "文件大小：$size MB",
-    "生成时间：$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')",
-    '',
+    $hashLines
+    ''
+    "文件大小：$size MB"
+    $extraLines
+    "生成时间：$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+    ''
     '校验方法（PowerShell）：',
     "  Get-FileHash -Algorithm SHA256 -Path '$exeName'",
-    '',
+    ''
     '校验方法（CMD）：',
     "  certutil -hashfile $exeName SHA256"
 ) | Set-Content -Path (Join-Path $output 'SHA256.txt') -Encoding UTF8
