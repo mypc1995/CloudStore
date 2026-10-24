@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    S3 请求形状探针：用自定义 HttpClientFactory 拦截 AWS SDK 发出的原始请求，
+    在没有真实云账号的情况下核对三件事：
+      1) 寻址方式是 path-style 还是 virtual-hosted
+      2) 签名 scope 里的地域对不对
+      3) 有没有用 aws-chunked 流式签名（用了就会被 R2 / OSS 拒绝）
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>CloudStore.S3Probe</RootNamespace>
+    <AssemblyName>s3probe</AssemblyName>
+    <NoWarn>$(NoWarn);NU1902;NU1903;CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.511.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\R2Manager\Core\*.cs" LinkBase="AppCore" />
+  </ItemGroup>
+
+</Project>

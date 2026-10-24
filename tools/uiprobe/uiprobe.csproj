@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    UI 探针：把应用的 UI 层源码编进来，直接打开各个窗口。
+    用途是在没有 UI 自动化能力时，验证设置窗口 / 关于窗口的排版与交互。
+    不参与正式发布（build.ps1 只处理 src\R2Manager）。
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>CloudStore.UIProbe</RootNamespace>
+    <AssemblyName>uiprobe</AssemblyName>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <NoWarn>$(NoWarn);NU1902;NU1903;CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.511.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\R2Manager\Core\*.cs" LinkBase="AppCore" />
+    <Compile Include="..\..\src\R2Manager\UI\*.cs" LinkBase="AppUi" />
+    <EmbeddedResource Include="..\..\src\R2Manager\app.ico" LogicalName="CloudStore.app.ico" />
+  </ItemGroup>
+
+</Project>

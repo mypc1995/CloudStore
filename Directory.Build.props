@@ -1,0 +1,17 @@
+<Project>
+
+  <!--
+    版本号的唯一来源。
+    之前版本号只写在 src\R2Manager\R2Manager.csproj 里，结果：
+      * tools\uiprobe 探针编译出来的「关于」窗口显示 1.0.0（它没继承版本号），
+        拿它截图会误导人以为程序版本没跟上；
+      * installer\云存储管家.iss 里又手写了一份 AppVersion，改一处忘另一处。
+    统一放这里：主工程、探针、安装包脚本共用同一个版本号。
+    注意 Directory.Build.props 在 csproj 之前导入，
+    所以 csproj 里不能再写 <Version>，否则会把这里的值盖掉。
+  -->
+  <PropertyGroup>
+    <Version>1.2.0</Version>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>CloudStore</RootNamespace>
+    <AssemblyName>云存储管家</AssemblyName>
+    <!-- 版本号在根目录 Directory.Build.props 里统一维护，这里不要重复写 -->
+    <Product>云存储管家</Product>
+    <AssemblyTitle>云存储管家</AssemblyTitle>
+    <Description>Cloudflare R2 / 阿里云 OSS / 腾讯云 COS 存储桶可视化管理工具</Description>
+    <Authors>mypc1995</Authors>
+    <Company>mypc1995</Company>
+    <Copyright>作者 mypc1995 · 首发于吾爱破解 52pojie</Copyright>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <DebugType>embedded</DebugType>
+    <NoWarn>$(NoWarn);NU1902;NU1903;CA1416</NoWarn>
+    <!-- exe 自身的图标：资源管理器、任务栏、快捷方式都用它 -->
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.511.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 同时作为托管资源嵌入，供运行时按尺寸取用（见 UiEx.ApplyWindowIcons / AppLogoBitmap） -->
+    <EmbeddedResource Include="app.ico" LogicalName="CloudStore.app.ico" />
+  </ItemGroup>
+
+</Project>
